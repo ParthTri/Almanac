@@ -19,6 +19,9 @@ Almanac provides a framework for scheduling calendar events, that are:
 - In a plain text format 
 - Portable
 
+# Overview 
+
+## Foramt 
 An overview of the format:
 ```
 2023-02-13
@@ -46,3 +49,4 @@ And that is it. Almanac aims to be simple to write and simple to read, making ve
 
 To learn more about the different features including in the markup look at the docs here. 
 
+## Companion Tool
