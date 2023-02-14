@@ -9,11 +9,16 @@ The CLI companion app aims to provide a better command line experience, to quick
 
 **NOTE: The almanac companion app is still in development however the format can be used without an dependencies.** 
 
-# Overview
 
-## TODO Features
+# Features
 
-## Format
+Almanac provides a framework for scheduling calendar events, that are:
+
+- Human readable
+- CLI tools accessible (i.e. grep)
+- In a plain text format 
+- Portable
+
 An overview of the format:
 ```
 2023-02-13
