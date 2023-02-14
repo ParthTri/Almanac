@@ -19,7 +19,8 @@ Almanac provides a framework for scheduling calendar events, that are:
 - In a plain text format 
 - Portable
 
-# Overview 
+# Instalation/Quickstart
+
 
 ## Foramt 
 An overview of the format:
