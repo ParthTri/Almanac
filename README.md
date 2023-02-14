@@ -1,4 +1,5 @@
 # Summary
+
 Almanac is an open source plain text calendar format, designed to quickly capture, search and share calendar events.
 
 Almanac is created with the goal of replacing your cloud based calendar apps, i.e. Google Calenadar, Apple Icalendar, etc, etc. 
@@ -53,3 +54,8 @@ And that is it. Almanac aims to be simple to write and simple to read, making ve
 To learn more about the different features including in the markup look at the docs here. 
 
 ## Companion Tool
+
+The Almanac companion tool can be used in conjuction with the Almanac format to supercharge your workflow.
+
+By default Almanac will look for your calendar file path at environment variable `$ALMANAC`. Alternatively you can pass in the flag `-f` or `--file` followed by the path to the Almanac file.
+
