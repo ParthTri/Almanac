@@ -143,3 +143,14 @@ To use them use the corrosponding flag:
 - `-b` `--block`, example `$ almanac -v -b day`
 - `-o` `--outline`, example `$ almanac -v -o day`
 
+### Exports
+
+Due to Almanac lacking a proper application some users may find it harder to use with the lack of notifications. To support this Almanac provides ways to export your file into an iCalendar file or `.ics`.
+
+This can be achieved using the `-E` or `--export` flags. An optional file name can be provided to change the name of the output file.
+
+```shell
+$ almanac -E personal.ics
+```
+
+Almanac also supports filtered exporting, to learn more about this check out the docs here.
