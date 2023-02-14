@@ -94,3 +94,15 @@ However sometimes we cannot remember the exact time of things scheduled, but do 
 
 Upon selecting one you will be able to edit it interactively.
 
+### Cancel
+
+Entries can be cancelled using the `-c` or `--cancel` flag, followed by the date timestamp of the event.
+
+```shell
+$ almanac -c 2023-02-15 10:00-12:00
+```
+
+Cancelled events will be prepened with double front slashes or `//` to *"comment"* them out. They will continue to exist in the file if the need arises to reschedule them, but will not show up in [Views](###Views) and [Exports](###Exports) unless explicitly stated so.
+
+Much like editing events, you can supply the date and will be prompted with the options for that day.
+
