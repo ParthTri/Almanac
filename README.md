@@ -1,8 +1,3 @@
----
-title: Almanac
-description: A plain text calendar
----
-
 # Overview
 
 ## TODO Features
