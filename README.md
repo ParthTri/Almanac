@@ -106,3 +106,21 @@ Cancelled events will be prepened with double front slashes or `//` to *"comment
 
 Much like editing events, you can supply the date and will be prompted with the options for that day.
 
+### Searching
+Events can be searched using the companion tool or other CLI tools like grep and fzf. This section will focus on inbuilt searching tool.
+
+To search for events use the `-s` or `--search` flags. This are to be followed up by:
+- Dates or Date Ranges
+- Times (this could be either start or end times)
+- Tags
+- Event Names
+- Event descriptions (fuzzy search)
+
+This can all be combined to get more accurate results.
+```shell
+$ almanac -s 2023-02-01 - 2023-02-07
+```
+This will show all the events from the 1st of February 2023 to the 7th of February 2023.
+
+For more detailed examples check out the docs.
+
