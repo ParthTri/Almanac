@@ -59,3 +59,15 @@ The Almanac companion tool can be used in conjuction with the Almanac format to 
 
 By default Almanac will look for your calendar file path at environment variable `$ALMANAC`. Alternatively you can pass in the flag `-f` or `--file` followed by the path to the Almanac file.
 
+### Add
+
+New entries can be seemlessly added using the `-a` or `--add` flag. 
+
+```shell
+$ almanac -a 2023-02-15 10:00-12:00 Dentist appointment +health * Routine check
+```
+
+New entries must contain the date of the event. If the time is ommited the event is treated as an all-day event.
+
+When adding tags and descriptions, almanac will autodetect them and add them accordingly.
+
