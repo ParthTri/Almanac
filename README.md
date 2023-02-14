@@ -22,12 +22,14 @@ Almanac provides a framework for scheduling calendar events, that are:
 # Instalation/Quickstart
 
 
+# Usage 
+
 ## Foramt 
 An overview of the format:
 ```
 2023-02-13
-	09:00 - 09:10 Meditate
-	17:00 - 17:30 Accounting Meeting +work
+	09:00-09:10 Meditate
+	17:00-17:30 Accounting Meeting +work
 		* Talk about balance sheet
 ```
 
@@ -41,7 +43,7 @@ The example above uses the multiline format, for when there are more than one ev
 
 Another way of writing it would be the following:
 ```
-2023-02-14 14:00 - 16:00 Computer Science lecture +school
+2023-02-14 14:00-16:00 Computer Science lecture +school
 ```
 
 This is a more concise way of showing scheduled items. This format could be used to schedule multiple items of the same day using the same date time stamp. This is entirely up to you as the user.
