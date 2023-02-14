@@ -71,3 +71,26 @@ New entries must contain the date of the event. If the time is ommited the event
 
 When adding tags and descriptions, almanac will autodetect them and add them accordingly.
 
+### Edit
+
+Entries can be cancelled using the `-e` or `--edit` flag, followed by the date timestamp of the event. Everything following the event's datetime will be used to overwrite the previous event details.
+
+You can change the time:
+```shell
+$ almanac -e 2023-02-15 10:00-12:00 12:00-13:00
+```
+
+Add or remove tags:
+```shell
+$ almanac -e 2023-02-15 10:00-12:00 +routine -health
+```
+
+Change the description:
+```shell
+$ almanac -e 2023-02-15 10:00-12:00 * Ask dentist about cleaning
+```
+
+However sometimes we cannot remember the exact time of things scheduled, but do remeber the day. What you can do instead is enter the date of the event you want editted, and you will be presented with all the events on that day you could edit. 
+
+Upon selecting one you will be able to edit it interactively.
+
