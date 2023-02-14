@@ -124,3 +124,22 @@ This will show all the events from the 1st of February 2023 to the 7th of Februa
 
 For more detailed examples check out the docs.
 
+### Views
+
+The views command provides a ASCII drawing representation of your schedule. This can be filtered to show your day, week, or month.  This can be produced using the `-v` or `--view` command, followed by the `day`, `week`, or `month` keywords.
+
+For example:
+- `$ almanac -v day`
+- `$ almanac -v week`
+- `$ almanac -v month`
+
+Further options include 
+- Hiding days and Times that don't have events
+- Showing block view (diplaying a day in proper format)
+- Outline view (showing all the events and their time stamps)
+
+To use them use the corrosponding flag:
+- `-h` `--hide`, example `$ almanac -v -h day`
+- `-b` `--block`, example `$ almanac -v -b day`
+- `-o` `--outline`, example `$ almanac -v -o day`
+
