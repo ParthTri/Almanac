@@ -1,3 +1,14 @@
+# Summary
+Almanac is an open source plain text calendar format, designed to quickly capture, search and share calendar events.
+
+Almanac is created with the goal of replacing your cloud based calendar apps, i.e. Google Calenadar, Apple Icalendar, etc, etc. 
+
+This repository contains the Alamanc format but also comes with the companion cli tool with the same name. This README will be focused on both, however in the docs you will find greater details for both the format and the cli tool.
+
+The CLI companion app aims to provide a better command line experience, to quickly add, remove, search, filter and view your calendar events. It also provides a way to export your `.almanac` files to other formats such as `.ical`.
+
+**NOTE: The almanac companion app is still in development however the format can be used without an dependencies.** 
+
 # Overview
 
 ## TODO Features
