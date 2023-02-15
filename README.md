@@ -22,6 +22,44 @@ Almanac provides a framework for scheduling calendar events, that are:
 
 # Instalation/Quickstart
 
+## Binary Release
+
+For Windows, Mac OS or Linux, you can download a binary release here.
+
+## Build from source
+
+To build Almanac from source, make sure you have `go` installed with version >= 1.18.1.
+
+First clone this repo.
+```shell
+git clone https://github.com/ParthTri/Almanac.git
+```
+
+Next `cd` in to the directory.
+```shell
+cd Almanac
+```
+
+Finally run the build script:
+```shell
+./build.sh
+```
+
+This will create a binary in the `bin` directory, from there you should move it to somewhere on your `$PATH`.
+
+## IN PROGRESS Package Managers
+
+This is a work in progress feature, where you should be able to add it with your choice of package manager.
+
+Intended Support:
+
+- AUR
+- Homebrew 
+- Scoop (Windows)
+- Debian
+- Void Linux
+- Nix 
+
 
 # Usage 
 
