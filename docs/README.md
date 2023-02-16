@@ -4,8 +4,11 @@ You will find all the details about the Almanac format and command line tool rig
 
 # Table of Contents
 - [Installation](#Installation)
+    - [Binary Release](#binary-release)
+    - [Build from source](#build-from-source)
+    - [Package Managers](#in-progress-package-managers)
+- [Format](./Foramt.md)
 - [Usage](./Usage.md)
-
 
 # Installation
 ## Binary Release
