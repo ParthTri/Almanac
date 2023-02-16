@@ -6,9 +6,14 @@
 - [Editing Events](#editing-events)
 - [Cancelling Events](#cancelling-events)
 - [Searching](#searching)
+    - [Dates](#dates)
+    - [Time](#times)
+    - [Tags](#tags)
+    - [Event Names](#event-name)
+    - [Event Descriptions](#event-descriptions)
 - [Views](#views)
 - [Exports](#exports)
-
+    - [Filtered Exports](#filtered-exports)
 
 # Overview
 The Almanac companion tool can be used in conjuction with the Almanac format to supercharge your workflow.
