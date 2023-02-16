@@ -1,5 +1,4 @@
 <h1 style="text-align:center">Almanac Usage Docs</h1>
-----------
 
 # Table of Contents
 - [Overview](#overview)

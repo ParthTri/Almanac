@@ -1,5 +1,4 @@
 <h1 style="text-align:center">Almanac Format Docs</h1>
-----------
 
 This file will contain all the nitty gritty details about the Almanac foramt. 
 
