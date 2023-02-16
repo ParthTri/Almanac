@@ -1,4 +1,5 @@
 <h1 style="text-align:center">Almanac Documentation</h1>
+----------
 
 You will find all the details about the Almanac format and command line tool right here.
 
