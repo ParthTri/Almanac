@@ -39,3 +39,27 @@ func findDate(data []byte) (string, error) {
 	return date, nil
 }
 
+// Check at most 13 bytes to see if a time stamp is included, this includes a range
+// If we exlude whitespace i.e. 09:00-09:10, the hyphen should be at 5
+// Colons should be at 2 and 8
+func findTime(data []byte) ([]string, error) {
+	var time []string
+	
+	// Removing all whitespace
+	trimmed := []byte{}
+	for _, val := range data {
+		if val != 9 {
+			trimmed = append(trimmed, val)
+		}	
+	}
+	
+	if trimmed[5] == 45 {
+		time = append(time, string(trimmed[:5]))		
+		time = append(time, string(trimmed[6:]))		
+	} else {
+		return time, errors.New("Next set")
+	}
+
+	return time, nil
+}
+
