@@ -2,22 +2,21 @@ package parser
 
 import (
 	"errors"
-	"fmt"
 )
 
 type Event struct {
-	Name				string
-	Time				string
-	Description string
-	Tags				[]string
+	Name					string
+	Time					[]string
+	Description		string
+	Tags					[]string
 }
 
-type Events struct {
+type Day struct {
 	Date			string
 	Events		[]Event
 } 
 
-type Almanac []Events;
+type Almanac []Day;
 
 // Check 10 bytes of data to match for date syntax YYYY-MM-DD
 //	Hyphens = 4, 7
