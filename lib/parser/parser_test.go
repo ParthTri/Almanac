@@ -44,3 +44,25 @@ func TestFindDate(t *testing.T) {
 	} 
 }
 
+func TestFindTime(t *testing.T) {
+	want := []string{"09:00", "09:10"}
+	data := []byte(TestData)
+	
+	var time []string
+	var err error
+
+	for index := range data {
+		if index + 10 > len(data) {
+			break
+		}
+		time, err = findTime(data[index:index+13])
+		if err == nil {
+			break
+		}
+	}
+
+	if time[0] == want[0] && time[1] == want[1] { 
+		t.Errorf("Wanted %v got %v", want, time)
+	} 
+}
+
