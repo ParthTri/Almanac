@@ -66,3 +66,28 @@ func TestFindTime(t *testing.T) {
 	} 
 }
 
+func TestFindEventName(t *testing.T) {
+	want := "Meditate"
+	data := []byte(TestData)
+
+	var eventName string
+	for index := range data {
+		if index + 10 > len(data) {
+			break
+		}
+		_, err := findTime(data[index:index+13])
+		if err == nil {
+			eventName, err = findEventName(data[index+13:])
+			if err != nil {
+				t.Error(err)
+			} else {
+				break
+			}
+		}
+	}
+	
+	if eventName != want {
+		t.Errorf("Event Name Not Found\n Wanted %v Got %v", want, eventName)
+	}
+}
+
