@@ -48,12 +48,20 @@ func findTime(data []byte) ([]string, error) {
 	// Removing all whitespace
 	trimmed := []byte{}
 	for _, val := range data {
-		if val != 9 {
+		if val != 9 && val != 32{
 			trimmed = append(trimmed, val)
-		}	
+		}	else if val == 10 {
+			return time, errors.New("Next Set")
+		} else {
+			continue
+		}
 	}
 	
-	if trimmed[5] == 45 {
+	if len(trimmed) != 11 {
+		return time, errors.New("Next Set")
+	}
+	
+	if trimmed[5] == 45 && trimmed[2] == 58 && trimmed[8] == 58 { 
 		time = append(time, string(trimmed[:5]))		
 		time = append(time, string(trimmed[6:]))		
 	} else {
