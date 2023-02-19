@@ -51,17 +51,14 @@ func TestFindTime(t *testing.T) {
 	var time []string
 	var err error
 
-	for index := range data {
-		if index + 10 > len(data) {
-			break
-		}
+	for index := 0; index < len(data) && index+13 <= len(data); index += 1{
 		time, err = findTime(data[index:index+13])
 		if err == nil {
 			break
 		}
 	}
 
-	if time[0] == want[0] && time[1] == want[1] { 
+	if time[0] != want[0] && time[1] != want[1] { 
 		t.Errorf("Wanted %v got %v", want, time)
 	} 
 }
