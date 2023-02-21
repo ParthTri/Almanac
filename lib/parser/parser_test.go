@@ -23,24 +23,27 @@ var Outcome Almanac = Almanac{
 	},
 }
 
-func TestFindDate(t *testing.T) {
-	want := "2023-02-13"	
+func TestSetDate(t *testing.T) {
+	want := Day{
+		Date: "2023-02-13",
+	}
+	result := &Day{}
+	
 	data := []byte(TestData)
 	
-	var date string
 	var err error
 	for index := range data {
 		if index + 10 > len(data) {
 			break
 		}
-		date, err = findDate(data[index:index+10])
+		err = result.setDate(data[index:index+10])
 		if err == nil {
 			break
 		}
 	}
 
-	if date != want {
-		t.Errorf("Wanted %v got %v", want, date)
+	if result.Date != want.Date {
+		t.Errorf("Wanted %v got %v", want.Date, result.Date)
 	} 
 }
 
@@ -85,3 +88,4 @@ func TestFindEventName(t *testing.T) {
 	}
 }
 
+// func TestFindTags(t *testing.T) {
