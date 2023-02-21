@@ -56,8 +56,7 @@ func (day *Day)setDate(data []byte) (error) {
 // If we exlude whitespace i.e. 09:00-09:10, the hyphen should be at 5
 // Colons should be at 2 and 8
 // NOTE: This function will only work if the time values are passed in proper form
-func (day *Day)setTime(data []byte) (error) {
-	var event *Event = &Event{}
+func (event *Event)setTime(data []byte) (error) {
 	
 	// Removing all whitespace
 	trimmed := []byte{}
@@ -82,7 +81,6 @@ func (day *Day)setTime(data []byte) (error) {
 		return errors.New("Next set")
 	}
 
-	day.Events = append(day.Events, event)
 	return nil
 }
 
