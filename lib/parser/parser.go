@@ -54,6 +54,7 @@ func findDate(data []byte) (string, error) {
 // Check at most 13 bytes to see if a time stamp is included, this includes a range
 // If we exlude whitespace i.e. 09:00-09:10, the hyphen should be at 5
 // Colons should be at 2 and 8
+// NOTE: This function will only work if the time values are passed in proper form
 func findTime(data []byte) ([]string, error) {
 	var time []string
 	
@@ -83,6 +84,8 @@ func findTime(data []byte) ([]string, error) {
 	return time, nil
 }
 
+// Return the detected event name of a given set of bytes after finding the time
+// The function keeps considers parts of an event name until it reaches an identifier
 func findEventName(data []byte) (string, error) {
 	name := []byte{}
 
