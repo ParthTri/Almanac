@@ -33,7 +33,7 @@ func checkIdentifier(target byte) bool {
 // Check 10 bytes of data to match for date syntax YYYY-MM-DD
 //	Hyphens = 4, 7
 //	Rest numbers
-func findDate(data []byte) (string, error) {
+func (day *Day)setDate(data []byte) (error) {
 	var date string
 
 	if data[4] == 45 && data[7] == 45 {
@@ -41,14 +41,15 @@ func findDate(data []byte) (string, error) {
 			if (val > 48 || val < 57) || index == 4 || index == 7{
 				date += string(val)
 			} else {
-				return "", errors.New("Next set")
+				return errors.New("Next set")
 			}
 		}
 	} else {
-		return "", errors.New("Next set")
+		return errors.New("Next set")
 	}
 
-	return date, nil
+	day.Date = date
+	return nil
 }
 
 // Check at most 13 bytes to see if a time stamp is included, this includes a range
