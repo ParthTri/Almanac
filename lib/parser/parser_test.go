@@ -90,4 +90,28 @@ func TestSetEventName(t *testing.T) {
 	}
 }
 
-// func TestFindTags(t *testing.T) {
+func TestSetTags(t *testing.T) {
+	want := &Event{
+		Tags: []string{"+health"},
+	}
+	result := &Event{}
+
+	data := []byte(TestData)
+
+	for index := 0; index < len(data) && index+13 <= len(data); index++ {
+		err := result.setTime(data[index:index+13])
+		if err == nil {
+			result.setEventName(data[index+13:])
+			err := result.setTags(data[index+13:])
+
+			if err == nil {
+				break
+			}
+		}
+	}
+
+	if result.Tags[0] != want.Tags[0] {
+		t.Errorf("Tags Not Found.\n\t Wanted %v, Got %v", want.Tags[0], result.Tags[0])
+	}
+}
+
