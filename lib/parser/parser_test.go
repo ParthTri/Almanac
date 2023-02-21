@@ -66,15 +66,17 @@ func TestSetTime(t *testing.T) {
 	} 
 }
 
-func TestFindEventName(t *testing.T) {
-	want := "Meditate"
+func TestSetEventName(t *testing.T) {
+	want := &Event{
+		Name: "Meditate",
+	}
+	result := &Event{}
 	data := []byte(TestData)
 
-	var eventName string
 	for index := 0; index < len(data) && index + 13 <= len(data); index++ {
-		_, err := findTime(data[index:index+13])
+		err := result.setTime(data[index:index+13])
 		if err == nil {
-			eventName, err = findEventName(data[index+13:])
+			err = result.setEventName(data[index+13:])
 			if err != nil {
 				t.Error(err)
 			} else {
@@ -83,8 +85,8 @@ func TestFindEventName(t *testing.T) {
 		}
 	}
 
-	if eventName != want {
-		t.Errorf("Event Name Not Found\n Wanted %v Got %v\n %v \n %v", want, eventName, []byte(want), []byte(eventName))
+	if result.Name != want.Name {
+		t.Errorf("Event Name Not Found\n Wanted %v Got %v\n %v \n %v", want.Name, result.Name, []byte(want.Name), []byte(result.Name))
 	}
 }
 
