@@ -83,3 +83,28 @@ func findTime(data []byte) ([]string, error) {
 	return time, nil
 }
 
+func findEventName(data []byte) (string, error) {
+	name := []byte{}
+
+	if data[0] == 32 {
+		data = data[1:]
+	}
+
+	for _, val := range data {
+		if !checkIdentifier(val) {
+			name = append(name, val)
+		} else {
+			break
+		}
+	}
+
+	if len(name) == 0 {
+		return "", errors.New("No event name found")
+	}
+
+	if name[len(name)-1] == 32 {
+		name = name[:len(name)-1]
+	}
+	return string(name), nil
+}
+
