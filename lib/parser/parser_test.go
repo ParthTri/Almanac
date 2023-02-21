@@ -68,10 +68,7 @@ func TestFindEventName(t *testing.T) {
 	data := []byte(TestData)
 
 	var eventName string
-	for index := range data {
-		if index + 10 > len(data) {
-			break
-		}
+	for index := 0; index < len(data) && index + 13 <= len(data); index++ {
 		_, err := findTime(data[index:index+13])
 		if err == nil {
 			eventName, err = findEventName(data[index+13:])
@@ -82,9 +79,9 @@ func TestFindEventName(t *testing.T) {
 			}
 		}
 	}
-	
+
 	if eventName != want {
-		t.Errorf("Event Name Not Found\n Wanted %v Got %v", want, eventName)
+		t.Errorf("Event Name Not Found\n Wanted %v Got %v\n %v \n %v", want, eventName, []byte(want), []byte(eventName))
 	}
 }
 
