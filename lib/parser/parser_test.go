@@ -48,14 +48,10 @@ func TestSetDate(t *testing.T) {
 }
 
 func TestSetTime(t *testing.T) {
-	want := &Day{
-		Events: []*Event{
-			&Event{
+	want := &Event{
 				Time: []string{"09:00", "09:10"},
-			},
-		},
 	}
-	result := &Day{}
+	result := &Event{}
 	data := []byte(TestData)
 	
 	for index := 0; index < len(data) && index+13 <= len(data); index += 1{
@@ -65,8 +61,8 @@ func TestSetTime(t *testing.T) {
 		}
 	}
 
-	if result.Events[0].Time[0] != want.Events[0].Time[0] && result.Events[0].Time[1] != want.Events[0].Time[1] { 
-		t.Errorf("Wanted %v got %v", want.Events[0].Time, result.Events[0].Time)
+	if result.Time[0] != want.Time[0] && result.Time[1] != want.Time[1] { 
+		t.Errorf("Wanted %v got %v", want.Time, result.Time)
 	} 
 }
 
