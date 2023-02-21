@@ -13,7 +13,7 @@ type Event struct {
 
 type Day struct {
 	Date			string
-	Events		[]Event
+	Events		[]*Event
 } 
 
 type Almanac []Day;
@@ -56,8 +56,8 @@ func (day *Day)setDate(data []byte) (error) {
 // If we exlude whitespace i.e. 09:00-09:10, the hyphen should be at 5
 // Colons should be at 2 and 8
 // NOTE: This function will only work if the time values are passed in proper form
-func findTime(data []byte) ([]string, error) {
-	var time []string
+func (day *Day)setTime(data []byte) (error) {
+	var event *Event = &Event{}
 	
 	// Removing all whitespace
 	trimmed := []byte{}
@@ -65,24 +65,25 @@ func findTime(data []byte) ([]string, error) {
 		if val != 9 && val != 32{
 			trimmed = append(trimmed, val)
 		}	else if val == 10 {
-			return time, errors.New("Next Set")
+			return errors.New("Next Set")
 		} else {
 			continue
 		}
 	}
 	
 	if len(trimmed) != 11 {
-		return time, errors.New("Next Set")
+		return errors.New("Next Set")
 	}
 	
 	if trimmed[5] == 45 && trimmed[2] == 58 && trimmed[8] == 58 { 
-		time = append(time, string(trimmed[:5]))		
-		time = append(time, string(trimmed[6:]))		
+		event.Time = append(event.Time, string(trimmed[:5]))
+		event.Time = append(event.Time, string(trimmed[6:]))
 	} else {
-		return time, errors.New("Next set")
+		return errors.New("Next set")
 	}
 
-	return time, nil
+	day.Events = append(day.Events, event)
+	return nil
 }
 
 // Return the detected event name of a given set of bytes after finding the time
