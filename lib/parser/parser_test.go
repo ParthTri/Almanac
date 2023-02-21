@@ -47,22 +47,26 @@ func TestSetDate(t *testing.T) {
 	} 
 }
 
-func TestFindTime(t *testing.T) {
-	want := []string{"09:00", "09:10"}
+func TestSetTime(t *testing.T) {
+	want := &Day{
+		Events: []*Event{
+			&Event{
+				Time: []string{"09:00", "09:10"},
+			},
+		},
+	}
+	result := &Day{}
 	data := []byte(TestData)
 	
-	var time []string
-	var err error
-
 	for index := 0; index < len(data) && index+13 <= len(data); index += 1{
-		time, err = findTime(data[index:index+13])
+		err := result.setTime(data[index:index+13])
 		if err == nil {
 			break
 		}
 	}
 
-	if time[0] != want[0] && time[1] != want[1] { 
-		t.Errorf("Wanted %v got %v", want, time)
+	if result.Events[0].Time[0] != want.Events[0].Time[0] && result.Events[0].Time[1] != want.Events[0].Time[1] { 
+		t.Errorf("Wanted %v got %v", want.Events[0].Time, result.Events[0].Time)
 	} 
 }
 
