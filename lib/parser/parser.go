@@ -18,6 +18,18 @@ type Day struct {
 
 type Almanac []Day;
 
+// List of ascii identifiers: [, ], *, +, \n, \t
+var Identifiers [6]byte = [6]byte{91, 93, 42, 43, 9, 10}
+
+func checkIdentifier(target byte) bool {
+	for _, id := range Identifiers {
+		if target == id {
+			return true
+		}	
+	}
+	return false
+}
+
 // Check 10 bytes of data to match for date syntax YYYY-MM-DD
 //	Hyphens = 4, 7
 //	Rest numbers
