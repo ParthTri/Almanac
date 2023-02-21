@@ -86,7 +86,7 @@ func (event *Event)setTime(data []byte) (error) {
 
 // Return the detected event name of a given set of bytes after finding the time
 // The function keeps considers parts of an event name until it reaches an identifier
-func findEventName(data []byte) (string, error) {
+func (event *Event)setEventName(data []byte) (error) {
 	name := []byte{}
 
 	if data[0] == 32 {
@@ -102,12 +102,16 @@ func findEventName(data []byte) (string, error) {
 	}
 
 	if len(name) == 0 {
-		return "", errors.New("No event name found")
+		return errors.New("No event name found")
 	}
 
 	if name[len(name)-1] == 32 {
 		name = name[:len(name)-1]
 	}
-	return string(name), nil
+
+	event.Name = string(name)	
+	return nil
+}
+
 }
 
