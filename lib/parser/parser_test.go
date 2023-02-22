@@ -9,20 +9,6 @@ const TestData = `2023-02-13
 		* Meditate at beach
 `
 
-var Outcome Almanac = Almanac{
-	Day{
-		Date: "2023-02-13",
-		Events: []Event{
-			Event{
-				Name: "Meditate",
-				Time: []string{"09:00", "09:10"},
-				Description: "Meditate at beach",
-				Tags: []string{"health"},
-			},
-		},
-	},
-}
-
 func TestSetDate(t *testing.T) {
 	want := Day{
 		Date: "2023-02-13",
