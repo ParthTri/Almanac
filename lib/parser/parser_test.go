@@ -115,3 +115,24 @@ func TestSetTags(t *testing.T) {
 	}
 }
 
+func TestSetDescription(t *testing.T) {
+	want := &Event{
+		Description: "Meditate at beach",
+	}	
+	result := &Event{}
+	data := []byte(TestData)
+
+	for index := 0; index < len(data) && index+13 <= len(data); index++ {
+		err := result.setTime(data[index:index+13])	
+		if err == nil {
+			err = result.setDescription(data[index+13:])
+			if err == nil {
+				break	
+			}
+		}
+	}
+	if result.Description != want.Description {
+		t.Errorf("Description Not Found.\n\t Wanted \"%v\", Got \"%v\"", want.Description, result.Description)
+	}
+}
+
