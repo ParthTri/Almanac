@@ -70,15 +70,15 @@ func (event *Event)setTime(data []byte) (error) {
 		}
 	}
 	
-	if len(trimmed) != 11 {
-		return errors.New("Next Set")
+	for i := 0; i < len(trimmed) && i+10 <= len(trimmed); i++ {
+		subset := trimmed[i:i+11]
+		if subset[5] == 45 && subset[2] == 58 && subset[8] == 58 { 
+			event.Time = append(event.Time, string(subset[:5]))
+			event.Time = append(event.Time, string(subset[6:]))
+		} 
 	}
-	
-	if trimmed[5] == 45 && trimmed[2] == 58 && trimmed[8] == 58 { 
-		event.Time = append(event.Time, string(trimmed[:5]))
-		event.Time = append(event.Time, string(trimmed[6:]))
-	} else {
-		return errors.New("Next set")
+	if event.Time == nil {
+		return errors.New("Next Set")
 	}
 
 	return nil
