@@ -113,5 +113,27 @@ func (event *Event)setEventName(data []byte) (error) {
 	return nil
 }
 
+// Find all the tags associated with a given date and set them as Event.Tags
+func (event *Event)setTags(data []byte) (error) {
+	tmp := []byte{}
+
+	for index, val := range data {
+		if val == 43 {
+			compact := data[index:]
+			for x := 0; x < len(compact); x++ {
+				if compact[x] != 32 && compact[x] != 10{
+					tmp = append(tmp, compact[x])
+				} else {
+					break
+				}
+			}
+		} else if val == 32 && len(tmp) != 0 {
+			event.Tags = append(event.Tags, string(tmp))	
+			tmp = []byte{}
+		} 	
+	}
+	
+	return nil
 }
+
 
