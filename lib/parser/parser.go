@@ -127,10 +127,10 @@ func (event *Event)setTags(data []byte) (error) {
 					break
 				}
 			}
-		} else if val == 32 && len(tmp) != 0 {
+		} else if ( val == 32 || val == 10 || index+1 == len(data) ) && len(tmp) != 0 {
 			event.Tags = append(event.Tags, string(tmp))	
 			tmp = []byte{}
-		} 	
+		}
 	}
 	
 	return nil
