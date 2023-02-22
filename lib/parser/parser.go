@@ -136,4 +136,24 @@ func (event *Event)setTags(data []byte) (error) {
 	return nil
 }
 
+// Find the description and set it as Event.Description
+func (event *Event)setDescription(data []byte) (error)  {
+	for index, val := range data {
+		if val == 42 {
+			compact := data[index+2:]
+			for i := 0; i < len(compact); i++ {
+				if compact[i] != 10 {
+					event.Description += string(compact[i])
+				} else {
+					break
+				}
+			}
+		} else if val == 10 && event.Description != "" {
+			break
+		}
+	}
+
+	return nil	
+}
+
 
