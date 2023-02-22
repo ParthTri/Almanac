@@ -70,7 +70,7 @@ func (event *Event)setTime(data []byte) (error) {
 		}
 	}
 	
-	for i := 0; i < len(trimmed) && i+10 <= len(trimmed); i++ {
+	for i := 0; i < len(trimmed) && i+11 <= len(trimmed); i++ {
 		subset := trimmed[i:i+11]
 		if subset[5] == 45 && subset[2] == 58 && subset[8] == 58 { 
 			event.Time = append(event.Time, string(subset[:5]))
