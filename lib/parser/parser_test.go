@@ -122,3 +122,26 @@ func TestSetDescription(t *testing.T) {
 	}
 }
 
+func compareStructs(first Almanac, second Almanac) bool {
+	for i := 0; i < len(first); i++ {
+		if first[i].Date != second[i].Date {
+			return false
+		}
+
+		for j := 0; j < len(first[i].Events); j++ {
+			if first[i].Events[j].Time[0] != second[i].Events[j].Time[0] && first[i].Events[j].Time[1] != second[i].Events[j].Time[1]{
+				return false	
+			}
+			
+			if first[i].Events[j].Name != second[i].Events[j].Name {
+				return false 
+			}
+
+			if first[i].Events[j].Description != second[i].Events[j].Description {
+				return false 
+			}
+		}
+	}
+	return true
+}
+
