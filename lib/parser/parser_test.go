@@ -2,6 +2,7 @@ package parser
 
 import (
 	"testing"
+	"os"
 )
 
 const TestData = `2023-02-13
@@ -145,3 +146,43 @@ func compareStructs(first Almanac, second Almanac) bool {
 	return true
 }
 
+func TestParseFile(t *testing.T) {
+	want := &Almanac{
+		&Day{
+			Date: "2023-02-13",
+			Events: []*Event{
+				&Event{
+					Time: []string{"09:00", "09:10"},
+					Name: "Meditate",
+				},
+				&Event{
+					Time: []string{"17:00", "17:30"},
+					Name: "Accounting Meeting",
+					Tags: []string{"+work"},
+					Description: "Talk about balance sheet",
+				},
+			},
+		},
+		&Day{
+			Date: "2023-02-14",
+			Events: []*Event{
+				&Event{
+					Time: []string{"14:00", "16:00"},
+					Name: "Computer Science lecture",
+					Tags: []string{"+school"},
+					Description: "Make sure to create sketch notes",
+				},
+			},
+		},
+	}
+
+	data, err := os.ReadFile("../../example.almanac")
+	if err != nil {
+		t.Error(err)
+	}
+	result := ParseFile(data)
+
+	if compareStructs(*want, *result) {
+		t.Errorf("Almanac structs do not match\n\tWant %v\n\tGot %v", want, result)
+	}
+}
