@@ -29,6 +29,7 @@ type Almanac []*Day;
 
 // List of ascii identifiers: [, ], *, +, \n, \t
 var Identifiers [6]byte = [6]byte{91, 93, 42, 43, 9, 10}
+var TimeUnits		[3]byte = [3]byte{72, 77, 83}
 
 func checkIdentifier(target byte) bool {
 	for _, id := range Identifiers {
@@ -39,6 +40,14 @@ func checkIdentifier(target byte) bool {
 	return false
 }
 
+func checkTimeUnit(target byte) bool {
+	for _, id := range TimeUnits {
+		if target == id || target == id+32 {
+			return true
+		}	
+	}
+	return false
+}
 // Check 10 bytes of data to match for date syntax YYYY-MM-DD
 //	Hyphens = 4, 7
 //	Rest numbers
