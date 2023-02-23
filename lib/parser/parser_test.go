@@ -1,8 +1,10 @@
 package parser
 
 import (
-	"testing"
+	"errors"
+	"fmt"
 	"os"
+	"testing"
 )
 
 const TestData = `2023-02-13
@@ -123,27 +125,41 @@ func TestSetDescription(t *testing.T) {
 	}
 }
 
-func compareStructs(first Almanac, second Almanac) bool {
+func compareStructs(first Almanac, second Almanac) error {
+	if len(first) != len(second) {
+		return errors.New(fmt.Sprintf("Number of Dates do not match\n\t Wanted %v, Got %v", len(first), len(second)))
+	}
+
 	for i := 0; i < len(first); i++ {
 		if first[i].Date != second[i].Date {
-			return false
+			return errors.New(fmt.Sprintf("Dates do not match\n\tWanted %v, Got %v", first[i].Date, second[i].Date))
+		}
+
+		if len(first[i].Events) != len(second[i].Events) {
+			return errors.New(fmt.Sprintf("Number of events do not match\n\tWanted %v, Got %v", len(first[i].Events), len(second[i].Events)))
 		}
 
 		for j := 0; j < len(first[i].Events); j++ {
-			if first[i].Events[j].Time[0] != second[i].Events[j].Time[0] && first[i].Events[j].Time[1] != second[i].Events[j].Time[1]{
-				return false	
+			if first[i].Events[j].Time[0] != second[i].Events[j].Time[0] || first[i].Events[j].Time[1] != second[i].Events[j].Time[1]{
+				return errors.New(fmt.Sprintf("Event Times Do Not Match\n\tWanted %v, Got %v", first[i].Events[j].Time, second[i].Events[j].Time))
 			}
 			
 			if first[i].Events[j].Name != second[i].Events[j].Name {
-				return false 
+				return errors.New(fmt.Sprintf("Event names do not match\n\tWanted %v, Got %v", first[i].Events[j].Name, second[i].Events[j].Name))
 			}
 
 			if first[i].Events[j].Description != second[i].Events[j].Description {
-				return false 
+				return errors.New(fmt.Sprintf("Event descriptions do not match\n\tWanted %v, Got %v", first[i].Events[j].Description, second[i].Events[j].Description))
+			}
+
+			for index, tag := range first[i].Events[j].Tags {
+				if tag != second[i].Events[j].Tags[index] {
+					return errors.New(fmt.Sprintf("Tags do not match\n\tWanted %v, Got %v", first[i].Events[j].Tags, second[i].Events[j].Tags))
+				}
 			}
 		}
 	}
-	return true
+	return nil
 }
 
 func TestParseFile(t *testing.T) {
@@ -182,7 +198,7 @@ func TestParseFile(t *testing.T) {
 	}
 	result := ParseFile(data)
 
-	if compareStructs(*want, *result) {
-		t.Errorf("Almanac structs do not match\n\tWant %v\n\tGot %v", want, result)
+	if err := compareStructs(*want, *result); err != nil{
+		t.Error(err.Error())
 	}
 }
