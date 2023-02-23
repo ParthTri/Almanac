@@ -17,7 +17,7 @@ type Day struct {
 	Events		[]*Event
 } 
 
-type Almanac []Day;
+type Almanac []*Day;
 
 // List of ascii identifiers: [, ], *, +, \n, \t
 var Identifiers [6]byte = [6]byte{91, 93, 42, 43, 9, 10}
@@ -157,4 +157,80 @@ func (event *Event)setDescription(data []byte) (error)  {
 	return nil	
 }
 
+func ParseFile(data []byte) *Almanac {
+	Almanac := &Almanac{}
 
+	dataString := string(data)
+	Lines := strings.Split(dataString, "\n")
+
+	for index := 0; index < len(Lines); index++ {
+		line := Lines[index]
+		day := &Day{}
+	
+		byteLine := []byte(line)
+		if len(byteLine) == 0 {
+			continue	
+		}
+		err := day.setDate(byteLine)
+
+		if err == nil {
+			var x []string
+			var subset []string
+
+			if len(byteLine) > 10 {
+				x = append(x, line[10:])
+				subset = append(x, Lines[index+1])
+			} else {
+				subset = Lines[index+1:]
+			}
+
+			for i := 0; i < len(subset); i++ {
+				byteLine := []byte(subset[i])
+				if len(byteLine) == 0 {
+					break
+				}
+
+				x := &Day{}
+				if err := x.setDate(byteLine); err == nil { 
+					break 
+				}
+
+				event := &Event{}
+				err = event.setTime(byteLine) 	
+
+				if err == nil && len(byteLine) > 11 {
+					curr := string(subset[i])
+
+					currSplit := strings.Split(curr, " ")
+					if curr[0] == 32 {
+						currSplit = currSplit[4:]
+					} else {
+						currSplit = currSplit[3:]
+					}
+
+					curr = strings.Join(currSplit, " ")
+					byteCurr := []byte(curr)
+
+					event.setEventName(byteCurr)
+
+					event.setTags(byteCurr)	
+
+					if next := subset[i+1]; strings.Contains(next, "*") {
+						event.setDescription([]byte(next))
+						i++
+					} 
+				}
+
+				if event.Name != "" {
+					day.Events = append(day.Events, event)
+				}
+			}
+		} 
+
+		if day.Date != "" {
+			*Almanac = append(*Almanac, day)
+		}
+	}
+
+	return Almanac
+}
