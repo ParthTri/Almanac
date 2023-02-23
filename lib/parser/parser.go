@@ -2,6 +2,7 @@ package parser
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 )
 
@@ -75,26 +76,60 @@ func (day *Day)setDate(data []byte) (error) {
 // Colons should be at 2 and 8
 // NOTE: This function will only work if the time values are passed in proper form
 func (event *Event)setTime(data []byte) (error) {
-	
+	event.TimeRepeat = &TimeRepeat{}	
+
 	// Removing all whitespace
 	trimmed := []byte{}
-	for _, val := range data {
-		if val != 9 && val != 32{
-			trimmed = append(trimmed, val)
-		}	else if val == 10 {
-			return errors.New("Next Set")
-		} else {
-			continue
-		}
+
+	if data[0] == 9 {
+		trimmed = data[1:]
 	}
-	
-	for i := 0; i < len(trimmed) && i+11 <= len(trimmed); i++ {
-		subset := trimmed[i:i+11]
-		if subset[5] == 45 && subset[2] == 58 && subset[8] == 58 { 
-			event.Time = append(event.Time, string(subset[:5]))
-			event.Time = append(event.Time, string(subset[6:]))
+
+	time := []byte{}
+	for i := 0; i < len(trimmed); i++ {
+		if trimmed[i]	== 91 {
+			subset := trimmed[i+1:]
+			for j := 0; j < len(subset); j++ {
+				if subset[j] == 93 {
+					break
+				} 
+				time = append(time, subset[j])
+			}
 		} 
 	}
+
+	if len(time) != 0 {
+		if time[5] == 45 && time[2] == 58 && time[8] == 58 { 
+			event.Time = append(event.Time, string(time[:5]))
+			event.Time = append(event.Time, string(time[6:11]))
+
+			var durStart, durEnd int
+			subset := time[12:]
+
+			for i := 0; i < len(subset); i++ {
+				if subset[i] >= 48 && subset[i] <= 57 {
+					durStart = i
+				} else if checkTimeUnit(subset[i]) {
+					durEnd = i
+				}
+			}
+
+			if durEnd != 0 {
+				durr, err := strconv.ParseFloat(string(subset[durStart-2:durEnd]), 10)
+				if err != nil {
+					return err
+				}
+				event.TimeRepeat.Duration = durr
+				event.TimeRepeat.Unit = string(subset[durEnd])
+			}
+		}
+	} else if len(trimmed) > 0 {
+		if trimmed[5] == 45 && trimmed[2] == 58 && trimmed[8] == 58 { 
+			event.Time = append(event.Time, string(trimmed[:5]))
+			event.Time = append(event.Time, string(trimmed[6:11]))
+		}
+	}
+
 	if event.Time == nil {
 		return errors.New("Next Set")
 	}
