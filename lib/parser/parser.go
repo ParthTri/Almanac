@@ -2,6 +2,7 @@ package parser
 
 import (
 	"errors"
+	"strings"
 )
 
 type Event struct {
@@ -37,11 +38,11 @@ func (day *Day)setDate(data []byte) (error) {
 	var date string
 
 	if data[4] == 45 && data[7] == 45 {
-		for index, val := range data {
-			if (val >= 48 && val <= 57) || index == 4 || index == 7{
+		for _, val := range data {
+			if (val >= 48 && val <= 57) || val == 45{
 				date += string(val)
-			} else {
-				return errors.New("Next set")
+			} else if val == 32 || val == 42 {
+				break
 			}
 		}
 	} else {
