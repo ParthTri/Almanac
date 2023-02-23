@@ -38,7 +38,7 @@ func (day *Day)setDate(data []byte) (error) {
 
 	if data[4] == 45 && data[7] == 45 {
 		for index, val := range data {
-			if (val > 48 || val < 57) || index == 4 || index == 7{
+			if (val >= 48 && val <= 57) || index == 4 || index == 7{
 				date += string(val)
 			} else {
 				return errors.New("Next set")
