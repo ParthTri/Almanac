@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"strings"
 )
 
 const TestData = `2023-02-13
-	09:00 - 09:10 Meditate +health
+	[09:00-09:10 1.5h] Meditate +health
 		* Meditate at beach
 `
 
@@ -38,21 +39,39 @@ func TestSetDate(t *testing.T) {
 
 func TestSetTime(t *testing.T) {
 	want := &Event{
-				Time: []string{"09:00", "09:10"},
+		Time: []string{"09:00", "09:10"},
+		TimeRepeat: &TimeRepeat{
+			Duration: 1.5,
+			Unit:			"h",
+		},
 	}
 	result := &Event{}
 	data := []byte(TestData)
 	
-	for index := 0; index < len(data) && index+13 <= len(data); index += 1{
-		err := result.setTime(data[index:index+13])
+	dataString := string(data)	
+	dataSlice := strings.Split(dataString, "\n")
+
+	for index := 0; index < len(dataSlice); index++{
+		byteLine := []byte(dataSlice[index])
+		err := result.setTime(byteLine)
+
 		if err == nil {
 			break
-		}
+		} 	
 	}
 
 	if result.Time[0] != want.Time[0] && result.Time[1] != want.Time[1] { 
 		t.Errorf("Wanted %v got %v", want.Time, result.Time)
 	} 
+
+	if result.TimeRepeat.Duration != want.TimeRepeat.Duration {
+		t.Errorf("Wanted %v got %v", want.TimeRepeat.Duration, result.TimeRepeat.Duration)
+	}
+
+
+	if result.TimeRepeat.Unit != want.TimeRepeat.Unit {
+		t.Errorf("Wanted %v got %v", want.TimeRepeat.Unit, result.TimeRepeat.Unit)
+	}
 }
 
 func TestSetEventName(t *testing.T) {
