@@ -5,9 +5,16 @@ import (
 	"strings"
 )
 
+
+type TimeRepeat	struct {
+	Duration			float64
+	Unit					string
+}
+
 type Event struct {
 	Name					string
 	Time					[]string
+	TimeRepeat		*TimeRepeat
 	Description		string
 	Tags					[]string
 }
