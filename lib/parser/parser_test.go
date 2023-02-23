@@ -14,7 +14,7 @@ const TestData = `2023-02-13
 
 func TestSetDate(t *testing.T) {
 	want := Day{
-		Date: "2023-02-13",
+		Date: []string{"2023-02-13"},
 	}
 	result := &Day{}
 	
@@ -31,7 +31,7 @@ func TestSetDate(t *testing.T) {
 		}
 	}
 
-	if result.Date != want.Date {
+	if result.Date[0] != want.Date[0] {
 		t.Errorf("Wanted %v got %v", want.Date, result.Date)
 	} 
 }
@@ -131,7 +131,7 @@ func compareStructs(first Almanac, second Almanac) error {
 	}
 
 	for i := 0; i < len(first); i++ {
-		if first[i].Date != second[i].Date {
+		if first[i].Date[0] != second[i].Date[0] {
 			return errors.New(fmt.Sprintf("Dates do not match\n\tWanted %v, Got %v", first[i].Date, second[i].Date))
 		}
 
@@ -165,7 +165,7 @@ func compareStructs(first Almanac, second Almanac) error {
 func TestParseFile(t *testing.T) {
 	want := &Almanac{
 		&Day{
-			Date: "2023-02-13",
+			Date: []string{"2023-02-13"},
 			Events: []*Event{
 				&Event{
 					Time: []string{"09:00", "09:10"},
@@ -180,7 +180,7 @@ func TestParseFile(t *testing.T) {
 			},
 		},
 		&Day{
-			Date: "2023-02-14",
+			Date: []string{"2023-02-14"},
 			Events: []*Event{
 				&Event{
 					Time: []string{"14:00", "16:00"},

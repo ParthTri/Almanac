@@ -15,6 +15,7 @@ type Event struct {
 type Day struct {
 	Date			string
 	Events		[]*Event
+	Date				[]string
 } 
 
 type Almanac []*Day;
@@ -49,7 +50,7 @@ func (day *Day)setDate(data []byte) (error) {
 		return errors.New("Next set")
 	}
 
-	day.Date = date
+	day.Date = append(day.Date, date)
 	return nil
 }
 
@@ -227,7 +228,7 @@ func ParseFile(data []byte) *Almanac {
 			}
 		} 
 
-		if day.Date != "" {
+		if len(day.Date) != 0 {
 			*Almanac = append(*Almanac, day)
 		}
 	}
