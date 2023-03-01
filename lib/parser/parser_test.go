@@ -9,7 +9,7 @@ import (
 )
 
 const TestData = `2023-02-13
-	[09:00-09:10 1.5h] Meditate +health
+	09:00-09:10 Meditate +health
 		* Meditate at beach
 `
 
@@ -40,10 +40,7 @@ func TestSetDate(t *testing.T) {
 func TestSetTime(t *testing.T) {
 	want := &Event{
 		Time: []string{"09:00", "09:10"},
-		TimeRepeat: &TimeRepeat{
-			Duration: 1.5,
-			Unit:			"h",
-		},
+		TimeRepeat: &TimeRepeat{},
 	}
 	result := &Event{}
 	data := []byte(TestData)
@@ -57,7 +54,7 @@ func TestSetTime(t *testing.T) {
 
 		if err == nil {
 			break
-		} 	
+		}
 	}
 
 	if result.Time[0] != want.Time[0] && result.Time[1] != want.Time[1] { 
@@ -72,6 +69,7 @@ func TestSetTime(t *testing.T) {
 	if result.TimeRepeat.Unit != want.TimeRepeat.Unit {
 		t.Errorf("Wanted %v got %v", want.TimeRepeat.Unit, result.TimeRepeat.Unit)
 	}
+
 }
 
 func TestSetEventName(t *testing.T) {
@@ -162,7 +160,7 @@ func compareStructs(first Almanac, second Almanac) error {
 			if first[i].Events[j].Time[0] != second[i].Events[j].Time[0] || first[i].Events[j].Time[1] != second[i].Events[j].Time[1]{
 				return errors.New(fmt.Sprintf("Event Times Do Not Match\n\tWanted %v, Got %v", first[i].Events[j].Time, second[i].Events[j].Time))
 			}
-			
+		
 			if first[i].Events[j].Name != second[i].Events[j].Name {
 				return errors.New(fmt.Sprintf("Event names do not match\n\tWanted %v, Got %v", first[i].Events[j].Name, second[i].Events[j].Name))
 			}
@@ -186,11 +184,11 @@ func TestParseFile(t *testing.T) {
 		&Day{
 			Date: []string{"2023-02-13"},
 			Events: []*Event{
-				&Event{
+				{
 					Time: []string{"09:00", "09:10"},
 					Name: "Meditate",
 				},
-				&Event{
+				{
 					Time: []string{"17:00", "17:30"},
 					Name: "Accounting Meeting",
 					Tags: []string{"+work"},
@@ -201,7 +199,7 @@ func TestParseFile(t *testing.T) {
 		&Day{
 			Date: []string{"2023-02-14"},
 			Events: []*Event{
-				&Event{
+				{
 					Time: []string{"14:00", "16:00"},
 					Name: "Computer Science lecture",
 					Tags: []string{"+school"},
