@@ -21,9 +21,8 @@ type Event struct {
 }
 
 type Day struct {
-	Date			string
+	Date			[]string
 	Events		[]*Event
-	Date				[]string
 } 
 
 type Almanac []*Day;
