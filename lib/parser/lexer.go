@@ -116,3 +116,43 @@ func (s *Scanner) scanLetter() (tok Token, lit string) {
 
 	return WORD, buf.String()
 }
+
+func (s *Scanner) scanYear() (tok Token, lit string) {
+	var buf bytes.Buffer = *bytes.NewBuffer(make([]byte, 10))
+	buf.WriteRune(s.read())
+
+	for {
+		if ch := s.read(); ch == eof {
+			break
+		} else if !isDigit(ch) && ch != '-' {
+			s.unread()
+			break
+		} else {
+			_, _ = buf.WriteRune(ch)
+		}
+	}
+
+	if buf.Len() != 20 {
+		return ILLIGAL, buf.String()
+	}
+
+	return DATE, buf.String()
+}
+
+func (s *Scanner) scanTime() (tok Token, lit string) {
+	var buf bytes.Buffer = *bytes.NewBuffer(make([]byte, 5))
+	buf.WriteRune(s.read())
+
+	for {
+		if ch := s.read(); ch == eof {
+			break
+		} else if !isDigit(ch) && ch != ':' {
+			s.unread()
+			break
+		} else {
+			_, _ = buf.WriteRune(ch)
+		}
+	}
+
+	return TIME, buf.String()
+}
