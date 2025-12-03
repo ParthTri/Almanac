@@ -75,6 +75,12 @@ func TestScan(t *testing.T) {
 		}
 
 		t.Log(tok)
+		out, err := prettyToken(tok)
+		if err != nil {
+			t.Errorf("Unkown token found %v", tok)
+			return
+		}
+		t.Logf("%v ", out)
 
 		tokens = append(tokens, tok)
 	}
