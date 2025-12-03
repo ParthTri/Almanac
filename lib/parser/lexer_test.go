@@ -86,7 +86,7 @@ func TestScan(t *testing.T) {
 	}
 
 	t.Log(tokens)
-	if !slices.Equal(tokens, []Token{6, 3, 6, 3, 6, 3, 6, 3, 4, 6, 3, 6, 3, 5}) {
+	if !slices.Equal(tokens, []Token{WORD, WS, WORD, WS, WORD, WS, WORD, WS, TAG, WORD, WS, WORD, WS, DESCRIPTION}) {
 		t.Errorf("Tokens do not match, got %v", tokens)
 	}
 }
