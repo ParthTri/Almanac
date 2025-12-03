@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"io"
+	"unicode"
 )
 
 type Token int
@@ -25,20 +26,21 @@ const (
 
 )
 
+type Scanner struct {
+	r   *bufio.Reader
+	buf []rune
+}
+
 func isWhitespace(ch rune) bool {
-	return ch == ' ' || ch == '\t'
+	return unicode.IsSpace(ch)
 }
 
 func isLetter(ch rune) bool {
-	return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
+	return unicode.IsLetter(ch)
 }
 
 func isDigit(ch rune) bool {
-	return ch >= 48 && ch <= 57
-}
-
-type Scanner struct {
-	r *bufio.Reader
+	return unicode.IsDigit(ch)
 }
 
 func NewScanner(r io.Reader) *Scanner {
