@@ -153,6 +153,7 @@ func TestScanTime(t *testing.T) {
 	scanner := NewScanner(reader)
 
 	var tokens []Token
+	var vals []string
 
 	for {
 		tok, lit := scanner.Scan()
@@ -173,11 +174,18 @@ func TestScanTime(t *testing.T) {
 		t.Log(out)
 
 		tokens = append(tokens, tok)
+		vals = append(vals, lit)
 	}
 
 	if !slices.Equal(tokens, []Token{WORD, WS, TIME, EOL, EOL}) {
 		t.Errorf("Tokens do not match, got %v", tokens)
 	}
+
+	if vals[2] != "14:00" {
+		t.Errorf("Time not parsed properly, got %v", vals[2])
+	}
+
+	t.Log(vals[2])
 }
 
 func TestScanTimeRange(t *testing.T) {
@@ -186,6 +194,7 @@ func TestScanTimeRange(t *testing.T) {
 	scanner := NewScanner(reader)
 
 	var tokens []Token
+	var vals []string
 
 	for {
 		tok, lit := scanner.Scan()
@@ -206,9 +215,22 @@ func TestScanTimeRange(t *testing.T) {
 		t.Log(out)
 
 		tokens = append(tokens, tok)
+		vals = append(vals, lit)
 	}
 
 	if !slices.Equal(tokens, []Token{WORD, WS, TIME, DASH, TIME, EOL, EOL}) {
 		t.Errorf("Tokens do not match, got %v", tokens)
 	}
+
+	if vals[2] != "14:00" {
+		t.Errorf("Starting time does not match, got %v", vals[2])
+	}
+
+	t.Log(vals[2])
+
+	if vals[4] != "16:00" {
+		t.Errorf("Starting time does not match, got %v", vals[4])
+	}
+
+	t.Log(vals[4])
 }
