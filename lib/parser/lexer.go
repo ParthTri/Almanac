@@ -70,24 +70,6 @@ func (s *Scanner) unread(ch rune) {
 func (s *Scanner) Scan() (tok Token, lit string) {
 	ch := s.read()
 
-	if isWhitespace(ch) {
-		s.unread()
-		return s.scanWhitespace()
-	} else if isDigit(ch) {
-		s.unread()
-		tok, lit := s.scanYear()
-
-		if tok == ILLIGAL {
-			s.unread()
-			tok, lit = s.scanTime()
-		}
-
-		return tok, lit
-	} else if isLetter(ch) {
-		s.unread()
-		return s.scanLetter()
-	}
-
 	switch ch {
 	case eof:
 		return EOF, ""
@@ -99,6 +81,26 @@ func (s *Scanner) Scan() (tok Token, lit string) {
 		return EOL, string(ch)
 	case '-':
 		return DASH, string(ch)
+	}
+
+	if isWhitespace(ch) {
+		s.unread(ch)
+		return s.scanWhitespace()
+	} else if isDigit(ch) {
+		s.unread(ch)
+		tok, lit := s.scanDate()
+
+		if tok == ILLIGAL {
+			for i := len(lit) - 1; i >= 0; i-- {
+				s.unread(rune(lit[i]))
+			}
+			tok, lit = s.scanTime()
+		}
+
+		return tok, lit
+	} else if isLetter(ch) {
+		s.unread(ch)
+		return s.scanLetter()
 	}
 
 	return ILLIGAL, string(ch)
@@ -113,7 +115,7 @@ func (s *Scanner) scanWhitespace() (tok Token, lit string) {
 		if ch := s.read(); ch == eof {
 			break
 		} else if !isWhitespace(ch) {
-			s.unread()
+			s.unread(ch)
 			break
 		} else {
 			buf.WriteRune(ch)
@@ -130,7 +132,7 @@ func (s *Scanner) scanLetter() (tok Token, lit string) {
 		if ch := s.read(); ch == eof {
 			break
 		} else if !isLetter(ch) && !isDigit(ch) && ch != '_' {
-			s.unread()
+			s.unread(ch)
 			break
 		} else {
 			_, _ = buf.WriteRune(ch)
@@ -140,15 +142,15 @@ func (s *Scanner) scanLetter() (tok Token, lit string) {
 	return WORD, buf.String()
 }
 
-func (s *Scanner) scanYear() (tok Token, lit string) {
-	var buf bytes.Buffer = *bytes.NewBuffer(make([]byte, 10))
+func (s *Scanner) scanDate() (tok Token, lit string) {
+	var buf bytes.Buffer
 	buf.WriteRune(s.read())
 
 	for {
 		if ch := s.read(); ch == eof {
 			break
 		} else if !isDigit(ch) && ch != '-' {
-			s.unread()
+			s.unread(ch)
 			break
 		} else {
 			_, _ = buf.WriteRune(ch)
