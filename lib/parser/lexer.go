@@ -62,6 +62,16 @@ func (s *Scanner) Scan() (tok Token, lit string) {
 	if isWhitespace(ch) {
 		s.unread()
 		return s.scanWhitespace()
+	} else if isDigit(ch) {
+		s.unread()
+		tok, lit := s.scanYear()
+
+		if tok == ILLIGAL {
+			s.unread()
+			tok, lit = s.scanTime()
+		}
+
+		return tok, lit
 	} else if isLetter(ch) {
 		s.unread()
 		return s.scanLetter()
