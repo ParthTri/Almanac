@@ -1,8 +1,8 @@
 #!/bin/bash
 
-files=`ls *.md`
+files=`ls *.org`
 for i in $files; do
-	rename="${i/md/org}"
+	rename="${i/org/md}"
 	pandoc -s "$i" -o "$rename"
 	echo "$i -> $rename"
 done
