@@ -86,6 +86,8 @@ func (s *Scanner) Scan() (tok Token, lit string) {
 		return DESCRIPTION, string(ch)
 	case '\n':
 		return EOL, string(ch)
+	case '-':
+		return DASH, string(ch)
 	}
 
 	return ILLIGAL, string(ch)
