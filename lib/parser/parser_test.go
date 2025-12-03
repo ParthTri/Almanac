@@ -111,8 +111,9 @@ func TestParseMultipleEntries(t *testing.T) {
 }
 
 func TestParserMultiLineEvents(t *testing.T) {
-	input := `
-2025-02-13
+	t.Log("TestParserMultiLineEvents")
+
+	input := `2025-02-13
     09:00-09:10 Meditate +health
     17:00-17:30 Accounting Meeting +work
 	`
