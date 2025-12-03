@@ -108,8 +108,107 @@ func TestNewLine(t *testing.T) {
 		out, err := prettyToken(tok)
 		if err != nil {
 			t.Errorf("Unkown token found %v", tok)
+			return
 		}
 		t.Logf("%v ", out)
 		tokens = append(tokens, tok)
+	}
+
+	if !slices.Equal(tokens, []Token{DESCRIPTION, WS, WORD, EOL, TAG, WORD}) {
+		t.Errorf("Tokens do not match, got %v", tokens)
+	}
+}
+
+func TestScanYear(t *testing.T) {
+	input := " 2025-12-12\n"
+	reader := strings.NewReader(input)
+	scanner := NewScanner(reader)
+
+	var tokens []Token
+
+	for {
+		tok, _ := scanner.Scan()
+
+		if tok == EOF {
+			break
+		}
+
+		out, err := prettyToken(tok)
+		if err != nil {
+			t.Errorf("Unkown token found %v", tok)
+			return
+		}
+		t.Logf("%v ", out)
+		tokens = append(tokens, tok)
+	}
+
+	if !slices.Equal(tokens, []Token{WS, DATE, EOL}) {
+		t.Errorf("Tokens do not match, got %v", tokens)
+	}
+}
+
+func TestScanTime(t *testing.T) {
+	input := "time 14:00\n\n"
+	reader := strings.NewReader(input)
+	scanner := NewScanner(reader)
+
+	var tokens []Token
+
+	for {
+		tok, lit := scanner.Scan()
+
+		if tok == EOF {
+			break
+		} else if tok == ILLIGAL {
+			t.Errorf("Found illegal token '%v'", lit)
+			return
+		}
+
+		out, err := prettyToken(tok)
+		if err != nil {
+			t.Errorf("Unkown token found %v", out)
+			return
+		}
+
+		t.Log(out)
+
+		tokens = append(tokens, tok)
+	}
+
+	if !slices.Equal(tokens, []Token{WORD, WS, TIME, EOL, EOL}) {
+		t.Errorf("Tokens do not match, got %v", tokens)
+	}
+}
+
+func TestScanTimeRange(t *testing.T) {
+	input := "time  14:00-16:00\n\n"
+	reader := strings.NewReader(input)
+	scanner := NewScanner(reader)
+
+	var tokens []Token
+
+	for {
+		tok, lit := scanner.Scan()
+
+		if tok == EOF {
+			break
+		} else if tok == ILLIGAL {
+			t.Errorf("Found illegal token '%v'", lit)
+			return
+		}
+
+		out, err := prettyToken(tok)
+		if err != nil {
+			t.Errorf("Unkown token found %v", out)
+			return
+		}
+
+		t.Log(out)
+
+		tokens = append(tokens, tok)
+	}
+
+	if !slices.Equal(tokens, []Token{WORD, WS, TIME, DASH, TIME, EOL, EOL}) {
+		t.Errorf("Tokens do not match, got %v", tokens)
 	}
 }
