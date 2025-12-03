@@ -157,7 +157,7 @@ func (s *Scanner) scanDate() (tok Token, lit string) {
 		}
 	}
 
-	if buf.Len() != 20 {
+	if buf.Len() != 10 {
 		return ILLIGAL, buf.String()
 	}
 
@@ -165,14 +165,15 @@ func (s *Scanner) scanDate() (tok Token, lit string) {
 }
 
 func (s *Scanner) scanTime() (tok Token, lit string) {
-	var buf bytes.Buffer = *bytes.NewBuffer(make([]byte, 5))
+	var buf bytes.Buffer
 	buf.WriteRune(s.read())
 
 	for {
-		if ch := s.read(); ch == eof {
+		ch := s.read()
+		if ch == eof {
 			break
 		} else if !isDigit(ch) && ch != ':' {
-			s.unread()
+			s.unread(ch)
 			break
 		} else {
 			_, _ = buf.WriteRune(ch)
