@@ -48,6 +48,13 @@ func NewScanner(r io.Reader) *Scanner {
 }
 
 func (s *Scanner) read() rune {
+	// If we have runes in the unread buffer, pop from there.
+	if len(s.buf) > 0 {
+		ch := s.buf[len(s.buf)-1]
+		s.buf = s.buf[:len(s.buf)-1]
+		return ch
+	}
+
 	ch, _, err := s.r.ReadRune()
 	if err != nil {
 		return eof
@@ -56,7 +63,9 @@ func (s *Scanner) read() rune {
 	return ch
 }
 
-func (s *Scanner) unread() { _ = s.r.UnreadRune() }
+func (s *Scanner) unread(ch rune) {
+	s.buf = append(s.buf, ch)
+}
 
 func (s *Scanner) Scan() (tok Token, lit string) {
 	ch := s.read()
