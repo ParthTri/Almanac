@@ -16,6 +16,9 @@ func prettyToken(tok Token) (string, error) {
 		TAG:         "TAG",
 		DESCRIPTION: "DESCRIPTION",
 		WORD:        "WORD",
+		DATE:        "DATE",
+		TIME:        "TIME",
+		DASH:        "DASH",
 	}
 
 	out := tokens[tok]
