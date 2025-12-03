@@ -17,8 +17,12 @@ const (
 	// MAIN FEATURES
 	TAG         // +
 	DESCRIPTION // *
+	DASH        // - For time range
 
 	WORD // Characters
+	DATE // Date YYYY-MM-DD
+	TIME // Time HH:MM
+
 )
 
 func isWhitespace(ch rune) bool {
