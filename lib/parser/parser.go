@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"slices"
 	"strings"
 )
 
@@ -80,34 +81,20 @@ func (ev *Event) setName(p *Parser, tok Token, lit string) {
 	ev.Name = strings.TrimSpace(name)
 }
 
-func (p *Parser) Parse() (*Event, error) {
-	/*
-		Parse using the given scanner to return the first Event struct filled in
-
-		Name should be sequence of words seperated by whitespace before a TAG, DESCRIPTION or EOL
-	*/
-	event := &Event{}
-
-	// Scan the date
-	tok, lit := p.scanIgnoreWhitespace()
-	if tok == EOF {
-		return nil, nil
-	}
-
-	if tok != DATE {
-		return event, errors.New(fmt.Sprintf("Expected DATE got %v", tok))
-	} else {
-		event.Date = lit
-	}
+func (p *Parser) parseSingle(ev *Event) error {
+	event := ev
 
 	// Scan the time
-	tok, lit = p.scanIgnoreWhitespace()
+	tok, lit := p.scanIgnoreWhitespace()
 	if tok == EOL {
 		tok, lit = p.scanIgnoreWhitespace()
 	}
 
-	if tok != TIME {
-		return event, errors.New(fmt.Sprintf("Expected TIME got %v", tok))
+	// Hits 2 consecutive EOL then break
+	if tok == EOL || tok == EOF {
+		return errors.New("EOF")
+	} else if tok != TIME {
+		return errors.New(fmt.Sprintf("Expected TIME got %v", tok))
 	} else {
 		event.Time = append(event.Time, lit)
 	}
@@ -117,7 +104,7 @@ func (p *Parser) Parse() (*Event, error) {
 	if tok == DASH {
 		tok, lit = p.scanIgnoreWhitespace()
 		if tok != TIME {
-			return event, errors.New(fmt.Sprintf("Expected TIME for range got %v", lit))
+			return errors.New(fmt.Sprintf("Expected TIME for range got %v", lit))
 		}
 
 		event.Time = append(event.Time, lit)
@@ -152,7 +139,49 @@ func (p *Parser) Parse() (*Event, error) {
 		}
 	}
 
-	return event, nil
+	return nil
+}
+
+func (p *Parser) Parse() ([]*Event, error) {
+	/*
+		Parse using the given scanner to return the first Event struct filled in
+
+		Name should be sequence of words seperated by whitespace before a TAG, DESCRIPTION or EOL
+	*/
+
+	// TODO: Check if the input is a multi-line entry or a single line entry and run according to that
+	events := []*Event{}
+	event := &Event{}
+	var err error
+
+	tok1, lit1 := p.scan()
+	tok2, _ := p.scan()
+	if tok1 == EOF {
+		return []*Event{nil}, nil
+	}
+
+	if tok1 == DATE && tok2 == EOL {
+		event.Date = lit1
+		err = p.parseSingle(event)
+
+		for err == nil {
+			events = append(events, event)
+			event = &Event{}
+			event.Date = lit1
+			err = p.parseSingle(event)
+		}
+
+	} else if tok1 == DATE && tok2 == WS {
+		event.Date = lit1
+		err = p.parseSingle(event)
+		events = append(events, event)
+	}
+
+	if len(events) == 0 || (err != nil && err.Error() != "EOF") {
+		return []*Event{nil}, err
+	}
+
+	return events, nil
 }
 
 func (p *Parser) ParseAll() ([]*Event, error) {
@@ -160,14 +189,14 @@ func (p *Parser) ParseAll() ([]*Event, error) {
 
 	for {
 		event, err := p.Parse()
+
 		if err != nil {
 			return events, err
-		} else if event == nil {
+		} else if slices.Contains(event, nil) {
 			break
 		}
 
-		events = append(events, event)
-		fmt.Println(event)
+		events = append(events, event...)
 	}
 
 	return events, nil
