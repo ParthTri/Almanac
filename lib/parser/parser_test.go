@@ -179,17 +179,17 @@ func TestParserMultiLineEvents(t *testing.T) {
 }
 
 func TestParserMultipleMultiLine(t *testing.T) {
-	t.Log("TestParserMultiLineEvents")
+	t.Log("Test Parser MultiLine Events")
 
 	input := `2025-02-13
     09:00-09:10 Meditate +health
     17:00-17:30 Accounting Meeting +work
 
-    2025-12-15 10:00-10:30 Write up documentation +work
+	2025-12-15 10:00-10:30 Write up documentation +work
 
-    2025-12-16
-    	09:00-09:10 Meditate +health
-    	12:00-13:00 Lunch
+	2025-12-16
+	    09:00-09:10 Meditate +health
+	    12:00-13:00 Lunch
 	`
 
 	expected := []Event{
@@ -219,7 +219,7 @@ func TestParserMultipleMultiLine(t *testing.T) {
 			Name:        "Meditate",
 			Time:        []string{"09:00", "09:10"},
 			Description: "",
-			Tags:        []string{"work"},
+			Tags:        []string{"health"},
 		},
 		{
 			Date:        "2025-12-16",
