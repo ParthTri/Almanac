@@ -91,8 +91,11 @@ func (p *Parser) parseSingle(ev *Event) error {
 	}
 
 	// Hits 2 consecutive EOL then break
-	if tok == EOL || tok == EOF {
+	if tok == EOF {
 		return errors.New("EOF")
+	} else if tok == DATE {
+		p.unscan()
+		return errors.New("DATE")
 	} else if tok != TIME {
 		return errors.New(fmt.Sprintf("Expected TIME got %v", tok))
 	} else {
@@ -154,10 +157,14 @@ func (p *Parser) Parse() ([]*Event, error) {
 	event := &Event{}
 	var err error
 
-	tok1, lit1 := p.scan()
+	tok1, lit1 := p.scanIgnoreWhitespace()
 	tok2, _ := p.scan()
+
 	if tok1 == EOF {
 		return []*Event{nil}, nil
+	} else if tok1 == EOL {
+		tok1, lit1 = p.scan()
+		tok2, _ = p.scan()
 	}
 
 	if tok1 == DATE && tok2 == EOL {
@@ -170,14 +177,13 @@ func (p *Parser) Parse() ([]*Event, error) {
 			event.Date = lit1
 			err = p.parseSingle(event)
 		}
-
 	} else if tok1 == DATE && tok2 == WS {
 		event.Date = lit1
 		err = p.parseSingle(event)
 		events = append(events, event)
 	}
 
-	if len(events) == 0 || (err != nil && err.Error() != "EOF") {
+	if len(events) == 0 || (err != nil && !strings.Contains("EOF DATE", err.Error())) {
 		return []*Event{nil}, err
 	}
 
